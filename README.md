@@ -21,3 +21,9 @@ Just clone this repo and build the app. Then move app bundle to */Application* d
 ## Manually
 
 Unpack **Release.zip** and move app bundle to */Application* directory. Then in *System Preferences -> General* allow the app to run from untrusted developer.
+
+## Launch on Login
+
+- You can do autolaunch of this app at login time via *System Preferences*.
+
+<img src="Screenshot2.png"/>
