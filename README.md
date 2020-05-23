@@ -16,7 +16,7 @@ Sometimes strange system processes eat a lot cpu power, for example **photoanaly
 
 Just clone this repo and build the app. Then move app bundle to */Application* directory. 
 
-<img src="Screenshot1.png"/>
+<img src="Screenshot1.png" width="50%" height="50%" />
 
 ## Manually
 
