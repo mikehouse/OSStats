@@ -26,4 +26,4 @@ Unpack **Release.zip** and move app bundle to */Application* directory. Then in 
 
 - You can do autolaunch of this app at login time via *System Preferences*.
 
-<img src="Screenshot2.png"/>
+<img src="Screenshot2.png" width="60%" height="60%" />
