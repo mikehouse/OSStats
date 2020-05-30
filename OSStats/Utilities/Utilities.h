@@ -8,6 +8,12 @@
 
 #include <stdio.h>
 
-char* getMostHeavySystemCPUConsumer(void);
+typedef struct os_stats_t {
+    char *max_consume_proc_name; // "Xcode"
+    char *max_consume_proc_value; // "91.1"
+} OsStats;
+
+OsStats * os_stats(void);
+void os_stats_free(OsStats *);
 
 #endif /* Utilities_h */

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* getMostHeavySystemCPUConsumer(void) {
+OsStats* os_stats(void) {
     FILE *f;
     int line_len = 1000;
     char line[line_len];
@@ -74,12 +74,22 @@ char* getMostHeavySystemCPUConsumer(void) {
     pclose(f);
 
     if (process_consume != NULL && process_name != NULL) {
-        char *result = malloc((strlen(process_consume) + strlen(process_name) + 3) * sizeof(char));
-        sprintf(result, "%s%% %s", process_consume, process_name);
-        free(process_consume);
-        free(process_name);
-        return result;
+        OsStats *stats = malloc(sizeof(OsStats));
+        stats->max_consume_proc_name = process_name;
+        stats->max_consume_proc_value = process_consume;
+        return stats;
     }
 
     return NULL;
+}
+
+void os_stats_free(OsStats *stats) {
+    if (stats == NULL) { return; }
+    if (stats->max_consume_proc_name != NULL) {
+        free(stats->max_consume_proc_name);
+    }
+    if (stats->max_consume_proc_value != NULL) {
+        free(stats->max_consume_proc_value);
+    }
+    free(stats);
 }

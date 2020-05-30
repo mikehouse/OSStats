@@ -41,14 +41,14 @@ NSTimeInterval updateInterval = 5.0;
 }
 
 - (void)updateStatusBar {
-    char *string = getMostHeavySystemCPUConsumer();
-    if (string != NULL) {
-        NSString *process = [NSString stringWithFormat:@"cpu %s", string];
+    OsStats *stats = os_stats();
+    if (stats != NULL) {
+        NSString *process = [NSString stringWithFormat:@"cpu %s%% %s", stats->max_consume_proc_value, stats->max_consume_proc_name];
         self.statusItem.button.attributedTitle = [[NSAttributedString alloc] initWithString:process attributes:@{
             NSFontAttributeName: [NSFont systemFontOfSize:12],
             NSBaselineOffsetAttributeName: @(-16) // 🤷‍♂️
         }];
-        free(string);
+        os_stats_free(stats);
     }
 }
 
