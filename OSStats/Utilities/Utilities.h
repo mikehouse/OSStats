@@ -11,6 +11,7 @@
 typedef struct os_stats_t {
     char *max_consume_proc_name; // "Xcode"
     char *max_consume_proc_value; // "91.1"
+    double cpu_temperature;
 } OsStats;
 
 OsStats * os_stats(void);

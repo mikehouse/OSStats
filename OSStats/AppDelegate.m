@@ -43,7 +43,12 @@ NSTimeInterval updateInterval = 5.0;
 - (void)updateStatusBar {
     OsStats *stats = os_stats();
     if (stats != NULL) {
-        NSString *process = [NSString stringWithFormat:@"cpu %s%% %s", stats->max_consume_proc_value, stats->max_consume_proc_name];
+        NSString *process = nil;
+        if (stats->cpu_temperature > 0.0) {
+            process = [NSString stringWithFormat:@"cpu %0.1lf °C %s%% %s", stats->cpu_temperature, stats->max_consume_proc_value, stats->max_consume_proc_name];
+        } else {
+            process = [NSString stringWithFormat:@"cpu %s%% %s", stats->max_consume_proc_value, stats->max_consume_proc_name];
+        }
         self.statusItem.button.attributedTitle = [[NSAttributedString alloc] initWithString:process attributes:@{
             NSFontAttributeName: [NSFont systemFontOfSize:12],
             NSBaselineOffsetAttributeName: @(-16) // 🤷‍♂️

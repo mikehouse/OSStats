@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		822F54A02482BA9A0066C3D5 /* smc.c in Sources */ = {isa = PBXBuildFile; fileRef = 822F549F2482BA9A0066C3D5 /* smc.c */; };
 		824616F02479407E0086F1AB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 824616EF2479407E0086F1AB /* AppDelegate.m */; };
 		824616F5247940800086F1AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 824616F4247940800086F1AB /* Assets.xcassets */; };
 		824616FB247940800086F1AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 824616FA247940800086F1AB /* main.m */; };
@@ -14,6 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		822F549E2482BA9A0066C3D5 /* smc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smc.h; sourceTree = "<group>"; };
+		822F549F2482BA9A0066C3D5 /* smc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = smc.c; sourceTree = "<group>"; };
 		824616EB2479407E0086F1AB /* OSStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OSStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		824616EE2479407E0086F1AB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		824616EF2479407E0086F1AB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 		8246170624798FA50086F1AB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				822F549F2482BA9A0066C3D5 /* smc.c */,
+				822F549E2482BA9A0066C3D5 /* smc.h */,
 				82461708247991390086F1AB /* Utilities.h */,
 				82461707247991390086F1AB /* Utilities.c */,
 			);
@@ -152,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82461709247991390086F1AB /* Utilities.c in Sources */,
+				822F54A02482BA9A0066C3D5 /* smc.c in Sources */,
 				824616FB247940800086F1AB /* main.m in Sources */,
 				824616F02479407E0086F1AB /* AppDelegate.m in Sources */,
 			);

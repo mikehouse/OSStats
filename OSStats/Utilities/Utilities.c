@@ -4,6 +4,7 @@
 //
 
 #include "Utilities.h"
+#include "smc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -77,6 +78,11 @@ OsStats* os_stats(void) {
         OsStats *stats = malloc(sizeof(OsStats));
         stats->max_consume_proc_name = process_name;
         stats->max_consume_proc_value = process_consume;
+
+        SMCOpen();
+        stats->cpu_temperature = readCpuTemp();
+        SMCClose();
+
         return stats;
     }
 
