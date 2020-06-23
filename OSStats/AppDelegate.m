@@ -49,9 +49,11 @@ NSTimeInterval updateInterval = 5.0;
         } else {
             process = [NSString stringWithFormat:@"cpu %s%% %s", stats->max_consume_proc_value, stats->max_consume_proc_name];
         }
+        NSOperatingSystemVersion systemVersion = [NSProcessInfo processInfo].operatingSystemVersion;
+        NSNumber *offset = systemVersion.minorVersion >= 16 ? @(0) : @(-16);
         self.statusItem.button.attributedTitle = [[NSAttributedString alloc] initWithString:process attributes:@{
             NSFontAttributeName: [NSFont systemFontOfSize:12],
-            NSBaselineOffsetAttributeName: @(-16) // 🤷‍♂️
+            NSBaselineOffsetAttributeName: offset // 🤷‍♂️
         }];
         os_stats_free(stats);
     }
