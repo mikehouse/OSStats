@@ -14,13 +14,14 @@ OsStats* os_stats(void) {
     int line_len = 1000;
     char line[line_len];
 
-    f = popen("$(which ps) -Ao %cpu,comm", "r");
+    f = popen("$(which ps) -Ao %cpu,pid,comm", "r");
     if (f == NULL) {
         return NULL;
     }
 
     int counter = 0;
     double max_spu_consume = 0.0;
+    int pidVal = 0;
     char *process_name = NULL;
     char *process_consume = NULL;
     while (fgets(line, line_len, f) != NULL) {
@@ -45,6 +46,21 @@ OsStats* os_stats(void) {
             double cpu_consume = atof(cpu);
             if (cpu_consume > max_spu_consume) {
                 max_spu_consume = cpu_consume;
+
+                while (*string == empty) {
+                    string++;
+                }
+                char pid[10];
+                memset(pid, '\0', 10);
+
+                index = 0;
+                while (*string != empty) {
+                    pid[index] = *string;
+                    index++;
+                    string++;
+                }
+
+                pidVal = atoi(pid);
 
                 char *p = strrchr(string, '/');
                 if (process_name != NULL) {
@@ -78,6 +94,7 @@ OsStats* os_stats(void) {
         OsStats *stats = malloc(sizeof(OsStats));
         stats->max_consume_proc_name = process_name;
         stats->max_consume_proc_value = process_consume;
+        stats->pid = pidVal;
 
         SMCOpen();
         stats->cpu_temperature = readCpuTemp();
@@ -87,6 +104,17 @@ OsStats* os_stats(void) {
     }
 
     return NULL;
+}
+
+void kill9(int pid) {
+    if (pid <= 0) {
+        return;
+    }
+    int len = 40;
+    char command[len];
+    memset(command, '\0', len);
+    sprintf(command, "/bin/kill -9 %i", pid);
+    system(command);
 }
 
 void os_stats_free(OsStats *stats) {
