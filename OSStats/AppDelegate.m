@@ -57,6 +57,15 @@ static OSTemperatureKind temperatureKind = OSCelsius;
 - (void)readPlistConfiguration {
     NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         temperatureKind = [self readTemperatureKind];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            switch (temperatureKind) {
+                case OSFahrenheit:
+                    [self fahrenheitSelected];
+                    break;
+                default:
+                    [self celsiusSelected];
+            }
+        });
     }];
     [self.operationQueue addOperation:operation];
 }
