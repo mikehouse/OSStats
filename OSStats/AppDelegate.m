@@ -8,6 +8,7 @@
 
 NSTimeInterval updateInterval = 5.0;
 static OsStats *statsRef;
+static const NSString * configurationTemperatureKey = @"Temperature";
 
 typedef NS_ENUM(NSUInteger, OSTemperatureKind) {
     OSCelsius = 0,
@@ -49,7 +50,15 @@ static OSTemperatureKind temperatureKind = OSCelsius;
                                                         target:self selector:@selector(updateStatusBar) userInfo:nil repeats:YES];
 
     [self addMenu];
+    [self readPlistConfiguration];
     [self updateStatusBar];
+}
+
+- (void)readPlistConfiguration {
+    NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+        temperatureKind = [self readTemperatureKind];
+    }];
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
@@ -188,6 +197,8 @@ static OSTemperatureKind temperatureKind = OSCelsius;
     NSMenu *submenu = item.submenu;
     [submenu itemChanged:fahrenheitItem];
     [submenu itemChanged:celsiusItem];
+
+    [self writeTemperatureKind];
 }
 
 - (void)celsiusSelected {
@@ -202,6 +213,8 @@ static OSTemperatureKind temperatureKind = OSCelsius;
     NSMenu *submenu = item.submenu;
     [submenu itemChanged:fahrenheitItem];
     [submenu itemChanged:celsiusItem];
+
+    [self writeTemperatureKind];
 }
 
 - (NSMenuItem *)fahrenheitItem {
@@ -227,6 +240,61 @@ static OSTemperatureKind temperatureKind = OSCelsius;
             return;
         }
         self.processPidAtOpeningMenu = stats->pid;
+    }
+}
+
+#pragma mark - Plist write
+
+- (void)writeTemperatureKind {
+    NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+        NSMutableDictionary *plist = [[self configurationDictionary] mutableCopy];
+        plist[configurationTemperatureKey] = @(temperatureKind);
+        NSURL *url = [self configurationPlistURLPath];
+        NSError *error;
+        [plist writeToURL:url error:&error];
+        if (error != NULL) {
+            NSLog(@"Error %@", error);
+        }
+    }];
+    [self.operationQueue addOperation:operation];
+}
+
+- (OSTemperatureKind)readTemperatureKind {
+    NSDictionary *plist = [self configurationDictionary];
+    NSObject *value = plist[configurationTemperatureKey];
+    if (value != NULL && [value isKindOfClass:NSNumber.class]) {
+        NSNumber *num = (NSNumber *) value;
+        switch (num.integerValue) {
+            case OSCelsius:
+                return OSCelsius;
+            case OSFahrenheit:
+                return OSFahrenheit;
+            default:
+                return OSCelsius;
+        }
+    }
+    return OSCelsius;
+}
+
+- (NSURL *)configurationPlistURLPath {
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *path = [NSString stringWithFormat:@"%@/configuration.plist", bundle.resourcePath];
+    NSURL *resources = [NSURL fileURLWithPath:path isDirectory:NO];
+    return resources;
+}
+
+- (NSDictionary *)configurationDictionary {
+    NSURL *path = [self configurationPlistURLPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path.path]) {
+        NSError *error;
+        NSDictionary *plist = [[NSDictionary alloc] initWithContentsOfURL:path error:&error];
+        if (error != nil) {
+            NSLog(@"Error: %@", error);
+            return @{};
+        }
+        return plist;
+    } else {
+        return @{};
     }
 }
 
