@@ -75,13 +75,17 @@ static OSTemperatureKind temperatureKind = OSCelsius;
 }
 
 - (void)updateStatusBar {
+    [self updateStatusBarExcludingPid:0];
+}
+
+- (void)updateStatusBarExcludingPid:(int)processPid {
     NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         NSAssert(!NSThread.isMainThread, @"");
         if (statsRef != NULL) {
             os_stats_free(statsRef);
             statsRef = NULL;
         }
-        OsStats *stats = os_stats();
+        OsStats *stats = os_stats_exclude_pid(processPid);
         if (stats != NULL) {
             statsRef = stats;
             NSString *process = nil;
@@ -188,8 +192,8 @@ static OSTemperatureKind temperatureKind = OSCelsius;
         }
 
         kill9(pid);
-
-        [self updateStatusBar]; // update after a process killed.
+        [[self operationQueue] cancelAllOperations];
+        [self updateStatusBarExcludingPid:pid]; // update after a process killed.
     }];
     [self.operationQueue addOperation:operation];
 }

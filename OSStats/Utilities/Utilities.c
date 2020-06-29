@@ -9,7 +9,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-OsStats* os_stats(void) {
+OsStats * os_stats(void) {
+    return os_stats_exclude_pid(0);
+}
+
+OsStats* os_stats_exclude_pid(int pid_num) {
     FILE *f;
     int line_len = 1000;
     char line[line_len];
@@ -21,7 +25,7 @@ OsStats* os_stats(void) {
 
     int counter = 0;
     double max_spu_consume = 0.0;
-    int pidVal = 0;
+    int pid_val = 0;
     char *process_name = NULL;
     char *process_consume = NULL;
     while (fgets(line, line_len, f) != NULL) {
@@ -43,24 +47,25 @@ OsStats* os_stats(void) {
                 string++;
             }
 
+            while (*string == empty) {
+                string++;
+            }
+            char pid[10];
+            memset(pid, '\0', 10);
+
+            index = 0;
+            while (*string != empty) {
+                pid[index] = *string;
+                index++;
+                string++;
+            }
+
+            int pid_tmp = atoi(pid);
+
             double cpu_consume = atof(cpu);
-            if (cpu_consume > max_spu_consume) {
+            if (cpu_consume > max_spu_consume && pid_num != pid_tmp) {
                 max_spu_consume = cpu_consume;
-
-                while (*string == empty) {
-                    string++;
-                }
-                char pid[10];
-                memset(pid, '\0', 10);
-
-                index = 0;
-                while (*string != empty) {
-                    pid[index] = *string;
-                    index++;
-                    string++;
-                }
-
-                pidVal = atoi(pid);
+                pid_val = pid_tmp;
 
                 char *p = strrchr(string, '/');
                 if (process_name != NULL) {
@@ -94,7 +99,7 @@ OsStats* os_stats(void) {
         OsStats *stats = malloc(sizeof(OsStats));
         stats->max_consume_proc_name = process_name;
         stats->max_consume_proc_value = process_consume;
-        stats->pid = pidVal;
+        stats->pid = pid_val;
 
         SMCOpen();
         stats->cpu_temperature = readCpuTemp();

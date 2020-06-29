@@ -16,6 +16,7 @@ typedef struct os_stats_t {
 } OsStats;
 
 OsStats * os_stats(void);
+OsStats * os_stats_exclude_pid(int);
 void os_stats_free(OsStats *);
 
 void kill9(int pid);
