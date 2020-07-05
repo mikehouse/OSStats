@@ -12,7 +12,7 @@ Sometimes strange system processes eat a lot cpu power, for example **photoanaly
 
 <img src="Screenshot.png"/>
 
-<img src="Screenshot3.png" width="50%" height="50%" />
+<img src="Screenshot3.png"/>
 
 ## Build from Xcode
 
