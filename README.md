@@ -4,13 +4,15 @@
 Just simple application that shows the most cpu consumable process in the system.
 
 - info shown in system status bar
-- info update interval is 5 seconds
+- info update interval is 10 seconds
 
 ## Why ?
 
 Sometimes strange system processes eat a lot cpu power, for example **photoanalysisd**. To not spend time to open system Activity Monitor application to check what is going on, now it is just a brief look at system status bar.
 
 <img src="Screenshot.png"/>
+
+<img src="Screenshot3.png" width="50%" height="50%" />
 
 ## Build from Xcode
 
