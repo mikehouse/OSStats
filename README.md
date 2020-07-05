@@ -29,3 +29,11 @@ Unpack **Release.zip** and move app bundle to */Application* directory. Then in 
 - You can do autolaunch of this app at login time via *System Preferences*.
 
 <img src="Screenshot2.png" width="60%" height="60%" />
+
+## License
+
+For source code is MIT, for CPU temperature part is GPL-2.0 License (see *Credits* section below). 
+
+## Credits
+
+Fetching the CPU Temperature based on https://github.com/lavoiesl/osx-cpu-temp with GPL-2.0 License. 
