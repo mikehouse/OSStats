@@ -294,6 +294,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mike.house.OSStats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -316,6 +317,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mike.house.OSStats;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};

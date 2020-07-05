@@ -24,7 +24,7 @@ OsStats* os_stats_exclude_pid(int pid_num) {
     }
 
     int counter = 0;
-    double max_spu_consume = 0.0;
+    double max_cpu_consume = 0.0;
     int pid_val = 0;
     char *process_name = NULL;
     char *process_consume = NULL;
@@ -63,8 +63,8 @@ OsStats* os_stats_exclude_pid(int pid_num) {
             int pid_tmp = atoi(pid);
 
             double cpu_consume = atof(cpu);
-            if (cpu_consume > max_spu_consume && pid_num != pid_tmp) {
-                max_spu_consume = cpu_consume;
+            if (cpu_consume > max_cpu_consume && pid_num != pid_tmp) {
+                max_cpu_consume = cpu_consume;
                 pid_val = pid_tmp;
 
                 char *p = strrchr(string, '/');
@@ -99,6 +99,7 @@ OsStats* os_stats_exclude_pid(int pid_num) {
         OsStats *stats = malloc(sizeof(OsStats));
         stats->max_consume_proc_name = process_name;
         stats->max_consume_proc_value = process_consume;
+        stats->max_consume_proc_raw_value = max_cpu_consume;
         stats->pid = pid_val;
 
         SMCOpen();
@@ -126,9 +127,17 @@ void os_stats_free(OsStats *stats) {
     if (stats == NULL) { return; }
     if (stats->max_consume_proc_name != NULL) {
         free(stats->max_consume_proc_name);
+        stats->max_consume_proc_name = NULL;
     }
     if (stats->max_consume_proc_value != NULL) {
         free(stats->max_consume_proc_value);
+        stats->max_consume_proc_value = NULL;
     }
     free(stats);
+    stats = NULL;
+}
+
+OsMemStats os_mem_stats(void) {
+    OsMemStats stats = { 0, 0 };
+    return stats;
 }
