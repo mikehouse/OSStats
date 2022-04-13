@@ -141,7 +141,12 @@ static OSUpdateInterval updateInterval = OS10Seconds;
                     @"%s%% %s", stats->max_consume_proc_value, stats->max_consume_proc_name];
             }
             NSOperatingSystemVersion systemVersion = [NSProcessInfo processInfo].operatingSystemVersion;
-            NSNumber *offset = systemVersion.minorVersion >= 16 ? @(0) : @(-16); // 🤷‍♂️
+            NSNumber *offset = @(0);
+            if (systemVersion.majorVersion == 11) {
+                offset = @(-16);
+            } else if (systemVersion.majorVersion == 12) {
+                offset = @(-32);
+            }
             NSFont *font = [NSFont systemFontOfSize:12];
             NSAttributedString *separator = [[NSAttributedString alloc] initWithString:
                 statusBarValues[kStatusBarSeparatorValueKey] attributes:@{
